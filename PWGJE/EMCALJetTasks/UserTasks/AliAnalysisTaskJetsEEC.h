@@ -52,6 +52,7 @@ public:
   void SetCheckTracksOn(Bool_t t) { fTrackCheckPlots = t; }
   void SetCheckResolution(Bool_t t) { fCheckResolution = t; }
   void SetMinPtConst(Float_t t) { fMinPtConst = t;}
+  void SetMinTrackPtENCs(Float_t t) { fMinENCtrackPt = t;}
   void SetHardCutoff(Float_t t) { fHardCutoff = t; }
   void SetDoTwoTrack(Bool_t t) { fDoTwoTrack = t; }
   void SetCutDoubleCounts(Bool_t t) {fCutDoubleCounts = t;}
@@ -85,6 +86,7 @@ protected:
   JetShapeSub fJetShapeSub;   ///< jet subtraction to be used //MIGHT NOT NEED THIS
   JetSelectionType fJetSelection; ///< Jet selection: inclusive/recoil jet
   Float_t fPtThreshold; ///<
+  Float_t fMinENCtrackPt; ///< min track pT for the EECs 
 
 
 Bool_t fCentSelectOn;      ///< switch on/off centrality selection
