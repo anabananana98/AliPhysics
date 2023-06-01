@@ -55,7 +55,7 @@ AliAnalysisTaskJetsEEC::AliAnalysisTaskJetsEEC(): AliAnalysisTaskEmcalJet("AliAn
   fMinPtConst(1), fHardCutoff(0), fDoTwoTrack(kFALSE), fCutDoubleCounts(kTRUE),
   fPowerAlgo(1), fPhiCutValue(0.02),
   fEtaCutValue(0.02), fDerivSubtrOrder(0),
-  fStoreDetLevelJets(0), fStoreTrig(kFALSE), EEC_hist(0), jet_pt_hist(0), EEC_pt_hist(0), EEC_pt_hist_log(0), EEEC_hist(0), EEEC_pt_hist(0), EEEC_pt_hist_log(0)
+  fStoreDetLevelJets(0), fStoreTrig(kFALSE), fMinENCtrackPt(1.0), EEC_hist(0), jet_pt_hist(0), EEC_pt_hist(0), EEC_pt_hist_log(0), EEEC_hist(0), EEEC_pt_hist(0), EEEC_pt_hist_log(0)
 {
   SetMakeGeneralHistograms(kTRUE);
   DefineOutput(1, TList::Class());
@@ -71,7 +71,7 @@ AliAnalysisTaskJetsEEC::AliAnalysisTaskJetsEEC(const char *name): AliAnalysisTas
     fMinPtConst(1), fHardCutoff(0), fDoTwoTrack(kFALSE), fCutDoubleCounts(kTRUE),
     fPowerAlgo(1), fPhiCutValue(0.02),
     fEtaCutValue(0.02), fDerivSubtrOrder(0),
-    fStoreDetLevelJets(0), fStoreTrig(kFALSE), EEC_hist(0), jet_pt_hist(0), EEC_pt_hist(0), EEC_pt_hist_log(0), EEEC_hist(0), EEEC_pt_hist(0), EEEC_pt_hist_log(0)
+    fStoreDetLevelJets(0), fStoreTrig(kFALSE), fMinENCtrackPt(1.0), EEC_hist(0), jet_pt_hist(0), EEC_pt_hist(0), EEC_pt_hist_log(0), EEEC_hist(0), EEEC_pt_hist(0), EEEC_pt_hist_log(0)
 
 {
   SetMakeGeneralHistograms(kTRUE);
@@ -378,6 +378,7 @@ void AliAnalysisTaskJetsEEC::ComputeEEC(AliEmcalJet *fJet, AliJetContainer *fJet
     PseudoTracks.reset(part.Px(), part.Py(), part.Pz(), part.E()); //part is the constituent at that point in the loop, part keeps getting redefined in each step.
     const AliVParticle* part2 = part.GetParticle(); //"hack", leave this in , to get the index of the jet from AliPhysics
     PseudoTracks.set_user_index(GetConstituentID(constituentIndex, part2, fJet)); //leave this in for the same reason as above
+    if (PseudoTracks.pt() < fMinENCtrackPt) continue; //remove tracks below cut for ENCs
     fConstituents.push_back(PseudoTracks);
     constituentIndex++;
   }
